@@ -9,7 +9,7 @@ import { MdSaveAs } from "react-icons/md";
 export default function TaskItem({ todo, state, dispatch }) {
   const { id, text, completed } = todo;
   const [isEdit, setIsEdit] = useState(false);
-  // const [editedTodo, setEditedTodo] = useState(text);
+  const [editedTodo, setEditedTodo] = useState(text);
   return (
     <>
       <div className="single-item">
@@ -48,6 +48,35 @@ export default function TaskItem({ todo, state, dispatch }) {
                   e.preventDefault();
                   dispatch({
                     type: "EDITED-TODO",
+                    payload: { text: editedTodo, id: id },
+                  });
+                  setIsEdit(false);
+                }}
+              >
+                <label>
+                  <input
+                    className="editing-input"
+                    type="text"
+                    value={editedTodo}
+                    onChange={(e) => {
+                      e.preventDefault();
+                      setEditedTodo(e.target.value);
+                    }}
+                  />
+                </label>
+
+                <button className="save-edit-btn icon" type="submit">
+                  <MdSaveAs />
+                </button>
+              </form>
+            ) : (
+              // -------------------
+              /* <form
+                className="editing-form"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  dispatch({
+                    type: "EDITED-TODO",
                     payload: { text: state.inputValue, id: id },
                   });
                   setIsEdit(false);
@@ -64,34 +93,6 @@ export default function TaskItem({ todo, state, dispatch }) {
                         type: "HANDLE_INPUTS",
                         payload: e.target.value,
                       });
-                    }}
-                  />
-                </label>
-
-                <button className="save-edit-btn icon" type="submit">
-                  <MdSaveAs />
-                </button>
-              </form>
-            ) : (
-              /* <form
-                className="editing-form"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  dispatch({
-                    type: "EDITED-TODO",
-                    payload: { text: editedTodo, id: id },
-                  });
-                  setIsEdit(false);
-                }} 
-              >
-                <label>
-                  <input
-                    className="editing-input"
-                    type="text"
-                    value={editedTodo}
-                    onChange={(e) => {
-                      e.preventDefault();
-                      setEditedTodo(e.target.value);
                     }}
                   />
                 </label>
